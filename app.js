@@ -2,6 +2,7 @@
 
 // importing environmental variables
 import "./loadEnv.js";
+import bodyParser from "body-parser";
 
 // import express
 
@@ -36,6 +37,7 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //below I am making my static public foldeer with images and uploads available
 
@@ -45,19 +47,12 @@ app.use(express.urlencoded({ extended: false }));
 import toDosRouter from "./routes/toDosRouter.js";
 import usersRouter from "./routes/users.js";
 
+app.use("/todos", toDosRouter);
 app.use("/users", usersRouter);
-app.use("/products", productsRouter);
-app.use("/adminuser", adminuserRouter);
-app.use("/orders", ordersRouter);
-
-// Below will serve my images for the products and also uploaded images when new products are
-// created
-
-app.use(express.static(path.join(__dirname, "uploads")));
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use((err, req, res, next) => {
   console.log(err);
+
   res.status(505).json("There has been an error");
   next();
 });
