@@ -26,7 +26,30 @@ app.get("/", async (req, res, next) => {
 
 // Update a todo
 
-app.put("/:todoId", jwtVerify, async (req, res) => {});
+// app.put("/", jwtVerify, async (req, res) => {
+app.put("/", async (req, res) => {
+  const { id, title, details } = req.body.todo;
+
+  try {
+    let updatedTodo = await Todo.findOneAndUpdate(
+      {
+        id: id,
+      },
+      {
+        title: title,
+        details: details,
+      },
+      { new: true }
+    );
+    if (updatedTodo) {
+      res.status(200).json(updatedTodo);
+    } else {
+      res.status(401).json("No todo found");
+    }
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
 
 // Create a new todo
 
@@ -54,9 +77,10 @@ app.post("/", async (req, res, next) => {
 // Delete a todo
 // app.delete("/:todoId", jwtVerify, async (req, res) => {
 app.delete("/", async (req, res) => {
+  const { id } = req.body;
   try {
-    let deletedTodo = await Todo.findOne({
-      id: "22222",
+    let deletedTodo = await Todo.findOneAndDelete({
+      id: id,
     });
     if (deletedTodo) {
       res.status(200).json(deletedTodo);
