@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-//please just the name of the model titles as required
-
 const toDoSchema = new mongoose.Schema(
   {
     id: {

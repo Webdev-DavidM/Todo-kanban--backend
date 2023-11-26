@@ -39,10 +39,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//below I am making my static public foldeer with images and uploads available
-
-// below runs the request through each use line of code, adjust as need be
-
 // import ordersRouter from './routes/orders.js';
 import toDosRouter from "./routes/toDosRouter.js";
 import usersRouter from "./routes/users.js";

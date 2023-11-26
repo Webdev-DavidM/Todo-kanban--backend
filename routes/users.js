@@ -1,21 +1,21 @@
 /* NPM packages */
 
-import express from 'express';
+import express from "express";
 const app = express();
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-import expressValidator from 'express-validator';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import expressValidator from "express-validator";
 const { body, validationResult } = expressValidator;
 
 // with es6 modules i haver to use the full filename with .js otherwise it wont find it unlike in react with babel.
 /* Models */
-import User from '../models/User.js';
+import User from "../models/User.js";
 
 // import AdminUser from "../models/AdminUser.js";
 
 /* Middleware */
-import jwt from '../helpers/jwtCreate.js';
-import jwtVerify from '../middleware/jwtVerify.js';
+import jwt from "../helpers/jwtCreate.js";
+import jwtVerify from "../middleware/jwtVerify.js";
 
 // with es6 modules i haver to use the full filename with .js otherwise it wont find it unlike in react with babel.
 
@@ -23,13 +23,13 @@ import jwtVerify from '../middleware/jwtVerify.js';
 // it doesnt then it bcrypts the password, save the user to the server and then
 // create JWT token and sends info back to the front-end
 
-app.post('/register', async (req, res, next) => {
+app.post("/register", async (req, res, next) => {
   // Firstly I will make sure the user doesnt exist on the database already
   let existingUser = await User.find({ email: req.body.email });
   if (existingUser.length !== 0) {
     return res
       .status(401)
-      .json('The email address is already on the system, please log in.');
+      .json("The email address is already on the system, please log in.");
   }
 
   //Below I will bcrypt the password
@@ -67,7 +67,7 @@ app.post('/register', async (req, res, next) => {
       admin: false,
     });
   } catch (err) {
-    let error = new Error('Opps something went wrong');
+    let error = new Error("Opps something went wrong");
     next(error);
   }
 });
@@ -75,11 +75,11 @@ app.post('/register', async (req, res, next) => {
 //POST route- login user, this route checks if the user exists on the database, compared the bcrypt
 // password and then create a JWT token and sends it back to the front-end
 
-app.post('/login', async (req, res, next) => {
+app.post("/login", async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {
-      res.status(401).json('No user found');
+      res.status(401).json("No user found");
     }
     if (user) {
       // Here I am checking if the bcrypt password works
@@ -99,12 +99,12 @@ app.post('/login', async (req, res, next) => {
             admin: user.admin,
           });
         } else {
-          res.status(401).json('Unauthorised');
+          res.status(401).json("Unauthorised");
         }
       });
     }
   } catch (err) {
-    let error = new Error('Opps something went wrong');
+    let error = new Error("Opps something went wrong");
     next(error);
   }
 });

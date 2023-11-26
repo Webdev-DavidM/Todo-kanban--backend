@@ -2,15 +2,10 @@
 import express from "express";
 const app = express();
 
-/* Middleware */
-import jwtVerify from "../middleware/jwtVerify.js";
+// Models
 import Todo from "../models/Todo.js";
 
-/* Models */
-
 // Get todos
-
-// app.get("todos", jwtVerify, async (req, res, next) => {
 app.get("/", async (req, res, next) => {
   try {
     let todos = await Todo.find({});
@@ -25,10 +20,8 @@ app.get("/", async (req, res, next) => {
 });
 
 // Update a todo
-
-// app.put("/", jwtVerify, async (req, res) => {
 app.put("/", async (req, res) => {
-  const { id, title, details } = req.body.todo;
+  const { id, title, details, column } = req.body.todo;
 
   try {
     let updatedTodo = await Todo.findOneAndUpdate(
@@ -38,11 +31,14 @@ app.put("/", async (req, res) => {
       {
         title: title,
         details: details,
+        column: column,
       },
       { new: true }
     );
     if (updatedTodo) {
-      res.status(200).json(updatedTodo);
+      // get all todos
+      const todos = await Todo.find({});
+      res.status(200).json(todos);
     } else {
       res.status(401).json("No todo found");
     }
@@ -52,8 +48,6 @@ app.put("/", async (req, res) => {
 });
 
 // Create a new todo
-
-// app.post("/", jwtVerify, async (req, res, next) => {
 app.post("/", async (req, res, next) => {
   let { id, title, details, column } = req.body.todo;
   if (!id || !title || !details) {
@@ -80,9 +74,7 @@ app.post("/", async (req, res, next) => {
 });
 
 // Delete a todo
-// app.delete("/:todoId", jwtVerify, async (req, res) => {
 app.delete("/", async (req, res) => {
-  console.log(req.body);
   const { id } = req.body;
   try {
     let deletedTodo = await Todo.findOneAndDelete({
