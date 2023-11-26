@@ -82,13 +82,16 @@ app.post("/", async (req, res, next) => {
 // Delete a todo
 // app.delete("/:todoId", jwtVerify, async (req, res) => {
 app.delete("/", async (req, res) => {
+  console.log(req.body);
   const { id } = req.body;
   try {
     let deletedTodo = await Todo.findOneAndDelete({
       id: id,
     });
     if (deletedTodo) {
-      res.status(200).json(deletedTodo);
+      // get all todos
+      const todos = await Todo.find({});
+      res.status(200).json(todos);
     } else {
       res.status(401).json("No todo found");
     }
