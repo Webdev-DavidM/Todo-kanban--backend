@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon --inspect app.js",
     "debug": "nodemon --inspect app.js",
     "data:import": "node data/seeder.js",
     "data:destroy": "node data/seeder -d"

@@ -55,17 +55,22 @@ app.put("/", async (req, res) => {
 
 // app.post("/", jwtVerify, async (req, res, next) => {
 app.post("/", async (req, res, next) => {
-  let { id, title, details } = req.body.todo;
-  console.log(id, title, details);
+  let { id, title, details, column } = req.body.todo;
+  if (!id || !title || !details) {
+    res.json("Please enter all fields");
+  }
   const todo = new Todo({
     id,
     title,
     details,
+    column,
   });
   try {
-    let newTodo = await Todo.create(todo);
+    const newTodo = await Todo.create(todo);
     if (newTodo) {
-      res.status(201).json(newTodo);
+      // get all todos
+      const todos = await Todo.find({});
+      res.status(200).json(todos);
     }
   } catch (err) {
     console.log(err);

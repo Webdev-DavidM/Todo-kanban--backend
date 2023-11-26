@@ -16,6 +16,10 @@ const toDoSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a value for 'details'"],
     },
+    column: {
+      type: String,
+      required: [true, "Please provide a value for 'column'"],
+    },
   },
 
   { useUnifiedTopology: true }
