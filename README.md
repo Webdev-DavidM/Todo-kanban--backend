@@ -1,3 +1,10 @@
-I have created this boiler plate for the back end of a MERN stack application. Node, Express and MongoDB are set up the values need adjusted as required.
+**Key features**
 
-Download and then npm install to load the dependencies
+1) Express
+2) Node
+3) MongoDB backend
+
+**Still to do**
+
+1) Add typescript
+2) set up jwt to authenticate routes
