@@ -19,6 +19,27 @@ app.get("/", async (req, res, next) => {
   }
 });
 
+// Save the todos when a user moves a todo to a different column
+app.put("/updateColumns", async (req, res) => {
+  const { todos } = req.body;
+  console.log(todos);
+  try {
+    // delete all todos
+    await Todo.deleteMany({});
+    // save all todos
+    let savedTodos = await Todo.insertMany(todos);
+    if (savedTodos) {
+      // get all todos
+      const todos = await Todo.find({});
+      res.status(200).json(todos);
+    } else {
+      res.status(401).json("No todo found");
+    }
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
+
 // Update a todo
 app.put("/", async (req, res) => {
   const { id, title, details, column } = req.body.todo;
